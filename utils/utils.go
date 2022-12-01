@@ -1,8 +1,8 @@
-package main
+package utils
 
 import "fmt"
 
-func hey() {
+func Hey() {
 	name := "util"
 	fmt.Println("Hello", name)
 }
