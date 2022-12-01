@@ -6,8 +6,8 @@ import (
 	"dbene.hu/aoc22/utils"
 )
 
-func Day1() {
-	name := "day1"
+func Day2() {
+	name := "day2"
 	fmt.Println("Hello", name)
 
 	utils.Hey()
