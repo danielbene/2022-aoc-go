@@ -33,7 +33,7 @@ func WriteSolution(solution string) {
 
 	var sb strings.Builder
 	sb.WriteString("Solution: " + solution + "\n")
-	sb.WriteString("Duration: " + fmt.Sprintf("%s", duration) + "\n")
+	sb.WriteString("Duration: " + duration.String() + "\n")
 	sb.WriteString("--------------------------\n")
 
 	_, err2 := f.WriteString(sb.String())
