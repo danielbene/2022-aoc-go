@@ -1,9 +1,8 @@
-package main
+package days
 
 import (
 	"fmt"
-
-	"dbene.hu/aoc22/utils"
+	"myAwesomeModule/utils"
 )
 
 func Day2() {
