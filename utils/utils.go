@@ -18,7 +18,7 @@ func Hey() {
 }
 
 func StartTimer() {
-	getDayID()
+	initDayID()
 	start = time.Now()
 }
 
@@ -40,13 +40,17 @@ func WriteSolution(solution string) {
 	checkError(err2)
 }
 
+func GetDayID() string {
+	return dayId
+}
+
 func checkError(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
-func getDayID() {
+func initDayID() {
 	_, file, _, _ := runtime.Caller(2)
 	dayId = strings.Split(filepath.Base(file), ".")[0]
 }

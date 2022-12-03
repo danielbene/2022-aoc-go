@@ -22,8 +22,5 @@ func Day1() {
 	Part1()
 	Part2()
 
-	name := "day1"
-	fmt.Println("Hello", name)
-
-	utils.Hey()
+	fmt.Println(utils.GetDayID() + " done.")
 }
