@@ -27,7 +27,7 @@ func WriteSolution(solution string) {
 
 	root, _ := os.Getwd()
 	f, err := os.OpenFile(root+"/solutions/"+dayId+"_solution", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
-	checkError(err)
+	CheckError(err)
 
 	defer f.Close()
 
@@ -37,14 +37,14 @@ func WriteSolution(solution string) {
 	sb.WriteString("--------------------------\n")
 
 	_, err2 := f.WriteString(sb.String())
-	checkError(err2)
+	CheckError(err2)
 }
 
 func GetDayID() string {
 	return dayId
 }
 
-func checkError(e error) {
+func CheckError(e error) {
 	if e != nil {
 		panic(e)
 	}

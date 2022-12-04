@@ -1,16 +1,21 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	d "myAwesomeModule/days"
+	u "myAwesomeModule/utils"
 	"os"
 )
 
 func main() {
+	dayNum := os.Args[1]
 	if len(os.Args) > 2 && os.Args[2] == "init" {
-		fmt.Println("TODO: create new files")
+		templating(dayNum)
+		fmt.Println("Day creation done.")
 	} else {
-		switch os.Args[1] {
+		switch dayNum {
 		case "1":
 			d.Day1()
 		case "2":
@@ -19,4 +24,17 @@ func main() {
 			fmt.Println("Ain't nobody got day for that.")
 		}
 	}
+}
+
+func templating(dayNum string) {
+	os.Create("inputs/day" + dayNum + "_input")
+	os.Create("solutions/day" + dayNum + "_solution")
+
+	data, err := ioutil.ReadFile("template")
+	u.CheckError(err)
+
+	data = bytes.Replace(data, []byte("{DAYNUM}"), []byte(dayNum), -1)
+
+	err = ioutil.WriteFile("days/day"+dayNum+".go", data, 0644)
+	u.CheckError(err)
 }
