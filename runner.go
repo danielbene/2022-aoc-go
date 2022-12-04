@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	d "myAwesomeModule/days"
 	u "myAwesomeModule/utils"
 	"os"
@@ -30,11 +29,11 @@ func templating(dayNum string) {
 	os.Create("inputs/day" + dayNum + "_input")
 	os.Create("solutions/day" + dayNum + "_solution")
 
-	data, err := ioutil.ReadFile("template")
+	data, err := os.ReadFile("template")
 	u.CheckError(err)
 
 	data = bytes.Replace(data, []byte("{DAYNUM}"), []byte(dayNum), -1)
 
-	err = ioutil.WriteFile("days/day"+dayNum+".go", data, 0644)
+	err = os.WriteFile("days/day"+dayNum+".go", data, 0644)
 	u.CheckError(err)
 }
