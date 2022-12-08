@@ -4,18 +4,21 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
-	"time"
 )
 
 func part1() {
 	utils.StartTimer()
-	time.Sleep(5000)
+
+	// part1 solution here
+
 	defer utils.WriteSolution("template - part1")
 }
 
 func part2() {
 	utils.StartTimer()
-	time.Sleep(1000)
+
+	// part2 solution here
+
 	defer utils.WriteSolution("template - part2")
 }
 
