@@ -1,6 +1,6 @@
-Solution: template - part1
-Duration: 0s
---------------------------
 Solution: 71506
-Duration: 524.7µs
+Duration: 533.1µs
+--------------------------
+Solution: template - part2
+Duration: 0s
 --------------------------

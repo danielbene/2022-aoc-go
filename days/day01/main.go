@@ -13,14 +13,6 @@ import (
 func part1() {
 	utils.StartTimer()
 
-	// part1 solution here
-
-	defer utils.WriteSolution("template - part1")
-}
-
-func part2() {
-	utils.StartTimer()
-
 	// https://stackoverflow.com/questions/8757389/reading-a-file-line-by-line-in-go
 	file, err := os.Open(utils.GetInputPath())
 	utils.CheckError(err)
@@ -47,6 +39,14 @@ func part2() {
 	utils.CheckError(scanner.Err())
 
 	defer utils.WriteSolution(strconv.Itoa(mostCal))
+}
+
+func part2() {
+	utils.StartTimer()
+
+	// part2 solution here
+
+	defer utils.WriteSolution("template - part2")
 }
 
 func main() {
