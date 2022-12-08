@@ -9,10 +9,15 @@ import (
 
 var start time.Time
 var root string
+var solutionPath string
+var inputPath string
 
 func InitDay() {
 	root, _ = os.Getwd()
-	if err := os.Truncate(root+"/solution", 0); err != nil {
+	solutionPath = root + "/solution.md"
+	inputPath = root + "/input.txt"
+
+	if err := os.Truncate(solutionPath, 0); err != nil {
 		fmt.Printf("Failed to truncate solution file: %v", err)
 	}
 
@@ -26,7 +31,7 @@ func StartTimer() {
 func WriteSolution(solution string) {
 	duration := time.Since(start)
 
-	f, err := os.OpenFile(root+"/solution", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
+	f, err := os.OpenFile(solutionPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
 	CheckError(err)
 
 	defer f.Close()
@@ -44,6 +49,10 @@ func CheckError(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+func GetInputPath() string {
+	return inputPath
 }
 
 /*func GetDayID() string {
