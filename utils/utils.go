@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -11,24 +12,28 @@ var start time.Time
 var root string
 var solutionPath string
 var inputPath string
+var testInputPath string
 
 func InitDay() {
 	root, _ = os.Getwd()
 	solutionPath = root + "/solution.md"
 	inputPath = root + "/input.txt"
+	testInputPath = root + "/input_test.txt"
 
 	if err := os.Truncate(solutionPath, 0); err != nil {
 		fmt.Printf("Failed to truncate solution file: %v", err)
 	}
-
-	// TODO: add input parse
 }
 
 func StartTimer() {
 	start = time.Now()
 }
 
-func WriteSolution(solution string) {
+func WriteSolutionInt(solution int) {
+	WriteSolutionStr(strconv.Itoa(solution))
+}
+
+func WriteSolutionStr(solution string) {
 	duration := time.Since(start)
 
 	f, err := os.OpenFile(solutionPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0644)
@@ -53,6 +58,24 @@ func CheckError(e error) {
 
 func GetInputPath() string {
 	return inputPath
+}
+
+func GetTestInputPath() string {
+	return testInputPath
+}
+
+func MinMax(array []int) (int, int) {
+	var max int = array[0]
+	var min int = array[0]
+	for _, value := range array {
+		if max < value {
+			max = value
+		}
+		if min > value {
+			min = value
+		}
+	}
+	return min, max
 }
 
 /*func GetDayID() string {

@@ -5,30 +5,24 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
+	"sort"
 	"strconv"
 )
 
-// TODO: implement testing
+var input []int
 
-func part1() {
-	utils.StartTimer()
-
-	// https://stackoverflow.com/questions/8757389/reading-a-file-line-by-line-in-go
-	file, err := os.Open(utils.GetInputPath())
+func read(filePath string) {
+	file, err := os.Open(filePath)
 	utils.CheckError(err)
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	mostCal := 0
-	elfCal := 0
 
+	elfCal := 0
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "" {
-			if mostCal < elfCal {
-				mostCal = elfCal
-			}
-
+			input = append(input, elfCal)
 			elfCal = 0
 		} else {
 			cal, _ := strconv.Atoi(line)
@@ -36,25 +30,38 @@ func part1() {
 		}
 	}
 
+	input = append(input, elfCal)
 	utils.CheckError(scanner.Err())
-
-	defer utils.WriteSolution(strconv.Itoa(mostCal))
 }
 
-func part2() {
+func part1() int {
 	utils.StartTimer()
 
-	// part2 solution here
+	_, mostCal := utils.MinMax(input)
 
-	defer utils.WriteSolution("template - part2")
+	return mostCal
+}
+
+func part2() int {
+	utils.StartTimer()
+
+	sort.Ints(input)
+
+	sum := 0
+	for i := 1; i < 4; i++ {
+		sum += input[len(input)-i]
+	}
+
+	return sum
 }
 
 func main() {
 	utils.InitDay()
 
-	part1()
-	part2()
+	read(utils.GetInputPath())
 
-	path, _ := os.Getwd()
-	fmt.Println(path + " done.")
+	utils.WriteSolutionInt(part1())
+	utils.WriteSolutionInt(part2())
+
+	fmt.Println("done.")
 }
