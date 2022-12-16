@@ -7,7 +7,10 @@ import (
 	"os"
 )
 
-var input []int
+var col1 []int
+var col2 []int
+
+// part 1 sol: 13052
 
 func read(filePath string) {
 	file, err := os.Open(filePath)
@@ -18,37 +21,35 @@ func read(filePath string) {
 
 	for scanner.Scan() {
 		str := scanner.Text()
-		score := int(str[2]) - int(str[0])
-		shapeBonus := int(str[2]) - 87 // ascii [88-90]
-
-		input = append(input, parse(score, shapeBonus))
+		col1 = append(col1, int(str[0]))
+		col2 = append(col2, int(str[2]))
 	}
 
 	utils.CheckError(scanner.Err())
-}
-
-func parse(score int, bonus int) int {
-	if score == 23 {
-		return 3 + bonus
-	}
-
-	// ascii duckery
-	switch score + bonus {
-	case 22, 26, 27:
-		return 6 + bonus
-	case 23, 24, 28:
-		return 0 + bonus
-	default:
-		panic("Invalid state.")
-	}
 }
 
 func part1() int {
 	utils.StartTimer()
 
 	totalScore := 0
-	for _, score := range input {
-		totalScore += score
+	for i := 0; i < len(col1); i++ {
+		score := col2[i] - col1[i]
+		bonus := col2[i] - 87
+
+		if score == 23 {
+			totalScore += 3 + bonus
+			continue
+		}
+
+		// ascii duckery
+		switch score + bonus {
+		case 22, 26, 27:
+			totalScore += 6 + bonus
+		case 23, 24, 28:
+			totalScore += 0 + bonus
+		default:
+			panic("Invalid state.")
+		}
 	}
 
 	return totalScore
@@ -56,6 +57,7 @@ func part1() int {
 
 func part2() int {
 	utils.StartTimer()
+	// Y -draw, X -loose, Z -win
 
 	// part2 solution
 
