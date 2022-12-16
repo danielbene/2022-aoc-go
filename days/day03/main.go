@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
+	"strings"
 )
 
 var input []string
@@ -31,12 +32,18 @@ func getPriority(item rune) int {
 	}
 }
 
-func getIntersection(fh string, sh string) rune {
-	for _, r := range fh {
-		for _, r2 := range sh {
-			if r == r2 {
+func getIntersection(strs ...string) rune {
+	for _, r := range strs[0] {
+		if strings.ContainsRune(strs[1], r) {
+			if len(strs) == 3 {
+				if !strings.ContainsRune(strs[2], r) {
+					continue
+				}
+
 				return r
 			}
+
+			return r
 		}
 	}
 
@@ -62,9 +69,13 @@ func part1() int {
 func part2() int {
 	utils.StartTimer()
 
-	// part2 solution
+	sum := 0
+	for i := 0; i < len(input); i += 3 {
+		sameItem := getIntersection(input[i], input[i+1], input[i+2])
+		sum += getPriority(sameItem)
+	}
 
-	return 0
+	return sum
 }
 
 func main() {
