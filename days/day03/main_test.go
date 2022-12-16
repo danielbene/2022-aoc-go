@@ -6,7 +6,7 @@ import (
 )
 
 func TestPart1(t *testing.T) {
-	correct := 0
+	correct := 157
 	sol := part1()
 
 	if sol != correct {

@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
-	"strconv"
 )
 
-var input []int
+var input []string
 
 func read(filePath string) {
 	file, err := os.Open(filePath)
@@ -16,29 +15,48 @@ func read(filePath string) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-
-	elfCal := 0
 	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
-			input = append(input, elfCal)
-			elfCal = 0
-		} else {
-			cal, _ := strconv.Atoi(line)
-			elfCal += cal
+		input = append(input, scanner.Text())
+	}
+
+	utils.CheckError(scanner.Err())
+}
+
+func getPriority(item rune) int {
+	asciiVal := int(item)
+	if asciiVal > 90 {
+		return asciiVal - 96
+	} else {
+		return asciiVal - 64 + 26
+	}
+}
+
+func getIntersection(fh string, sh string) rune {
+	for _, r := range fh {
+		for _, r2 := range sh {
+			if r == r2 {
+				return r
+			}
 		}
 	}
 
-	input = append(input, elfCal)
-	utils.CheckError(scanner.Err())
+	panic("No intersecting item.")
 }
 
 func part1() int {
 	utils.StartTimer()
 
-	// part1 solution
+	sum := 0
+	for _, line := range input {
+		halfPoint := len(line) / 2
+		firstHalf := line[:halfPoint]
+		secondHalf := line[halfPoint:]
 
-	return 0
+		sameItem := getIntersection(firstHalf, secondHalf)
+		sum += getPriority(sameItem)
+	}
+
+	return sum
 }
 
 func part2() int {
