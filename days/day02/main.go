@@ -10,8 +10,6 @@ import (
 var col1 []int
 var col2 []int
 
-// part 1 sol: 13052
-
 func read(filePath string) {
 	file, err := os.Open(filePath)
 	utils.CheckError(err)
@@ -57,11 +55,32 @@ func part1() int {
 
 func part2() int {
 	utils.StartTimer()
-	// Y -draw, X -loose, Z -win
 
-	// part2 solution
+	totalScore := 0
+	for i := 0; i < len(col1); i++ {
 
-	return 0
+		score := (col2[i] - 88) * 3
+		tmpVal := col1[i] - 64
+		bonus := 0
+
+		if score == 0 {
+			tmpVal -= 1
+		} else if score == 6 {
+			tmpVal += 1
+		}
+
+		if tmpVal == 0 {
+			bonus = 3
+		} else if tmpVal == 4 {
+			bonus = 1
+		} else {
+			bonus = tmpVal
+		}
+
+		totalScore += score + bonus
+	}
+
+	return totalScore
 }
 
 func main() {
