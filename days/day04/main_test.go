@@ -15,7 +15,7 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	correct := 0
+	correct := 4
 	sol := part2()
 
 	if sol != correct {
