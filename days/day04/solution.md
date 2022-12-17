@@ -1,6 +1,6 @@
 Solution: 498
-Duration: 518.7µs
+Duration: 538µs
 --------------------------
 Solution: 859
-Duration: 1.0497ms
+Duration: 524.8µs
 --------------------------
