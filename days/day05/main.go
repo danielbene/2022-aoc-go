@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
-	"strconv"
+	"strings"
 )
 
-var input []int
+var mapLines []string
+var moveLines []string
+var colCount int
+var containers map[int][]string
 
 func read(filePath string) {
 	file, err := os.Open(filePath)
@@ -17,19 +20,38 @@ func read(filePath string) {
 
 	scanner := bufio.NewScanner(file)
 
-	elfCal := 0
+	separatorFound := false
 	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
-			input = append(input, elfCal)
-			elfCal = 0
+		if scanner.Text() == "" {
+			separatorFound = true
+			continue
+		}
+
+		if !separatorFound {
+			mapLines = append(mapLines, scanner.Text())
 		} else {
-			cal, _ := strconv.Atoi(line)
-			elfCal += cal
+			moveLines = append(moveLines, scanner.Text())
 		}
 	}
 
-	input = append(input, elfCal)
+	colCount = len(strings.ReplaceAll(mapLines[len(mapLines)-1], " ", ""))
+	containers = make(map[int][]string)
+	for j := len(mapLines) - 2; j >= 0; j-- {
+		for k := 1; k <= colCount; k++ {
+			col := k*4 - 3
+			if len(mapLines[j]) < col {
+				continue
+			}
+
+			char := string(mapLines[j][col])
+			if char != " " {
+				containers[k] = append(containers[k], char)
+			}
+		}
+	}
+
+	fmt.Println(containers)
+
 	utils.CheckError(scanner.Err())
 }
 
