@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -50,7 +51,7 @@ func read(filePath string) {
 		}
 	}
 
-	fmt.Println(containers)
+	// fmt.Println(containers)
 
 	utils.CheckError(scanner.Err())
 }
@@ -58,9 +59,27 @@ func read(filePath string) {
 func part1() string {
 	utils.StartTimer()
 
-	// part1 solution
+	for _, line := range moveLines {
+		parts := strings.Split(line, " ")
 
-	return "asd"
+		moveCnt, _ := strconv.Atoi(parts[1])
+		fromIdx, _ := strconv.Atoi(parts[3])
+		toIdx, _ := strconv.Atoi(parts[5])
+
+		for i := 0; i < moveCnt; i++ {
+			lastIdx := len(containers[fromIdx]) - 1
+			char := containers[fromIdx][lastIdx]
+			containers[fromIdx] = containers[fromIdx][:lastIdx]
+			containers[toIdx] = append(containers[toIdx], char)
+		}
+	}
+
+	var solution []string
+	for i := 1; i <= colCount; i++ {
+		solution = append(solution, containers[i][len(containers[i])-1])
+	}
+
+	return strings.Join(solution, "")
 }
 
 func part2() string {
