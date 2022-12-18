@@ -13,6 +13,7 @@ var mapLines []string
 var moveLines []string
 var colCount int
 var containers map[int][]string
+var containersCopy map[int][]string
 
 func read(filePath string) {
 	file, err := os.Open(filePath)
@@ -51,7 +52,13 @@ func read(filePath string) {
 		}
 	}
 
-	// fmt.Println(containers)
+	containersCopy = make(map[int][]string, len(containers))
+	for k, v := range containers {
+		containersCopy[k] = v
+	}
+
+	fmt.Println(containers)
+	fmt.Println(containersCopy)
 
 	utils.CheckError(scanner.Err())
 }
@@ -82,12 +89,43 @@ func part1() string {
 	return strings.Join(solution, "")
 }
 
+// solution: NLCDCLVMQ
 func part2() string {
 	utils.StartTimer()
 
-	// part2 solution
+	fmt.Println("-----------------------")
+	fmt.Println(containersCopy) // reference bug? - this is not the same that gets copied
 
-	return "asd"
+	for _, line := range moveLines {
+		parts := strings.Split(line, " ")
+
+		moveCnt, _ := strconv.Atoi(parts[1])
+		fromIdx, _ := strconv.Atoi(parts[3])
+		toIdx, _ := strconv.Atoi(parts[5])
+
+		containersCopy[toIdx] = append(containersCopy[toIdx], containersCopy[fromIdx][len(containersCopy[fromIdx])-moveCnt:]...)
+		containersCopy[fromIdx] = containersCopy[fromIdx][:len(containersCopy[fromIdx])-moveCnt]
+
+		/*var tmp []string
+		for i := 0; i < moveCnt; i++ {
+			lastIdx := len(containersCopy[fromIdx]) - 1
+			char := containersCopy[fromIdx][lastIdx]
+			containersCopy[fromIdx] = containersCopy[fromIdx][:lastIdx]
+			tmp = append(tmp, char)
+		}
+
+		for i := len(tmp); i > 0; i-- {
+			containersCopy[toIdx] = append(containersCopy[toIdx], tmp[i-1])
+		}*/
+
+	}
+
+	var solution []string
+	for i := 1; i <= colCount; i++ {
+		solution = append(solution, containersCopy[i][len(containersCopy[i])-1])
+	}
+
+	return strings.Join(solution, "")
 }
 
 func main() {
