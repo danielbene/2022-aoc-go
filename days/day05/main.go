@@ -54,11 +54,11 @@ func read(filePath string) {
 
 	containersCopy = make(map[int][]string, len(containers))
 	for k, v := range containers {
-		containersCopy[k] = v
+		// slice map values needs to be explicity copied or values will "corrupt" or smthg
+		c := make([]string, len(v))
+		copy(c, v)
+		containersCopy[k] = c
 	}
-
-	fmt.Println(containers)
-	fmt.Println(containersCopy)
 
 	utils.CheckError(scanner.Err())
 }
@@ -89,12 +89,8 @@ func part1() string {
 	return strings.Join(solution, "")
 }
 
-// solution: NLCDCLVMQ
 func part2() string {
 	utils.StartTimer()
-
-	fmt.Println("-----------------------")
-	fmt.Println(containersCopy) // reference bug? - this is not the same that gets copied
 
 	for _, line := range moveLines {
 		parts := strings.Split(line, " ")
@@ -105,19 +101,6 @@ func part2() string {
 
 		containersCopy[toIdx] = append(containersCopy[toIdx], containersCopy[fromIdx][len(containersCopy[fromIdx])-moveCnt:]...)
 		containersCopy[fromIdx] = containersCopy[fromIdx][:len(containersCopy[fromIdx])-moveCnt]
-
-		/*var tmp []string
-		for i := 0; i < moveCnt; i++ {
-			lastIdx := len(containersCopy[fromIdx]) - 1
-			char := containersCopy[fromIdx][lastIdx]
-			containersCopy[fromIdx] = containersCopy[fromIdx][:lastIdx]
-			tmp = append(tmp, char)
-		}
-
-		for i := len(tmp); i > 0; i-- {
-			containersCopy[toIdx] = append(containersCopy[toIdx], tmp[i-1])
-		}*/
-
 	}
 
 	var solution []string

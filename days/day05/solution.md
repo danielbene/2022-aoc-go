@@ -1,6 +1,6 @@
 Solution: VQZNJMWTR
-Duration: 1.0311ms
+Duration: 522.2µs
 --------------------------
-Solution: CFNJFLDJQ
-Duration: 511.5µs
+Solution: NLCDCLVMQ
+Duration: 687µs
 --------------------------
