@@ -1,6 +1,6 @@
 Solution: 1965
 Duration: 0s
 --------------------------
-Solution: 0
+Solution: 2773
 Duration: 0s
 --------------------------

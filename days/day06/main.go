@@ -24,12 +24,10 @@ func read(filePath string) {
 	utils.CheckError(scanner.Err())
 }
 
-func part1() int {
-	utils.StartTimer()
-
+func scanMessage(markerPos int) int {
 outer:
-	for i := 4; i <= len(input); i++ {
-		subStr := input[i-4 : i]
+	for i := markerPos; i <= len(input); i++ {
+		subStr := input[i-markerPos : i]
 		for _, r := range subStr {
 			if strings.Count(subStr, string(r)) > 1 {
 				continue outer
@@ -42,12 +40,16 @@ outer:
 	panic("No valid substring found.")
 }
 
+func part1() int {
+	utils.StartTimer()
+
+	return scanMessage(4)
+}
+
 func part2() int {
 	utils.StartTimer()
 
-	// part2 solution
-
-	return 0
+	return scanMessage(14)
 }
 
 func main() {
