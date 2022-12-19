@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
+	"strings"
 )
 
 var input string
@@ -26,9 +27,19 @@ func read(filePath string) {
 func part1() int {
 	utils.StartTimer()
 
-	fmt.Println(input)
+outer:
+	for i := 4; i <= len(input); i++ {
+		subStr := input[i-4 : i]
+		for _, r := range subStr {
+			if strings.Count(subStr, string(r)) > 1 {
+				continue outer
+			}
+		}
 
-	return 0
+		return i
+	}
+
+	panic("No valid substring found.")
 }
 
 func part2() int {
