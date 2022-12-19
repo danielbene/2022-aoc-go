@@ -29,6 +29,10 @@ func StartTimer() {
 	start = time.Now()
 }
 
+func WriteSolutionUint64(solution uint64) {
+	WriteSolutionStr(strconv.FormatUint(solution, 10))
+}
+
 func WriteSolutionInt(solution int) {
 	WriteSolutionStr(strconv.Itoa(solution))
 }
@@ -76,6 +80,16 @@ func MinMax(array []int) (int, int) {
 		}
 	}
 	return min, max
+}
+
+func Contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
 }
 
 /*func GetDayID() string {
