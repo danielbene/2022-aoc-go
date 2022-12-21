@@ -5,17 +5,11 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
-	"regexp"
 	"strconv"
 	"strings"
 )
 
-var folders map[string]Dir
-
-type Dir struct {
-	Size     uint64
-	Children []string
-}
+var folders map[string]int = make(map[string]int)
 
 func read(filePath string) {
 	file, err := os.Open(filePath)
@@ -23,96 +17,68 @@ func read(filePath string) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	path := "/root"
+	folders[path] = 0
 
-	folders = make(map[string]Dir)
-
-	reUp := regexp.MustCompile(`\$ cd \.\.`)
-	reFolder := regexp.MustCompile(`\$ cd \/|\$ cd \w+`)
-	reFile := regexp.MustCompile(`[0-9]+ [a-z.]+`)
-	reChild := regexp.MustCompile(`dir [a-z]+`)
-
-	f := "/"
+	// this day was a nightmare
+	// after countles errors angry me used this as an "inspiration"
+	// https://github.com/jeff-frederic/AdventOfCode-2022/blob/main/day7.py
 	for scanner.Scan() {
 		line := scanner.Text()
 
-		if reUp.FindString(line) != "" {
-			continue
-		} else if reFolder.FindString(line) != "" {
-			f = strings.ReplaceAll(line, "$ cd ", "")
-			folders[f] = Dir{}
-		} else if reFile.FindString(line) != "" {
-			val, _ := strconv.Atoi(strings.Split(line, " ")[0])
-
-			// https://stackoverflow.com/a/69006398
-			if entry, ok := folders[f]; ok {
-				entry.Size += uint64(val)
-				folders[f] = entry
+		if string(line[0]) == "$" {
+			if line[2:4] == "cd" {
+				if string(line[5]) == "/" {
+					path = "/root"
+				} else if len(line) >= 7 && line[5:7] == ".." {
+					path = path[0:strings.LastIndex(path, "/")]
+				} else {
+					dir := line[5:]
+					path = path + "/" + dir
+					folders[path] = 0
+				}
 			}
-		} else if reChild.FindString(line) != "" {
-			// https://stackoverflow.com/a/69006398
-			if entry, ok := folders[f]; ok {
-				entry.Children = append(entry.Children, strings.Split(line, " ")[1])
-				folders[f] = entry
-			}
-		} else {
-			if line != "$ ls" {
-				panic("Unhandled line type found.")
+		} else if line[0:3] != "dir" {
+			size, _ := strconv.Atoi(line[:strings.LastIndex(line, " ")])
+			dir := path
+			for i := 0; i < strings.Count(path, "/"); i++ {
+				folders[dir] += size
+				dir = dir[:strings.LastIndex(dir, "/")]
 			}
 		}
 	}
-
-	//fmt.Println(folders)
 
 	utils.CheckError(scanner.Err())
 }
 
-func valueRecursion(d Dir) uint64 {
-	val := d.Size
-	for _, ch := range d.Children {
-		val += valueRecursion(folders[ch])
-	}
-
-	return val
-}
-
-func part1() uint64 {
+func part1() int {
 	utils.StartTimer()
 
-	valueMap := make(map[string]uint64)
-	for key, value := range folders {
-		// it seems faster going through everything than checking if key already calculated
-		valueMap[key] = valueRecursion(value)
-
-		/*if len(folders) == len(valueMap) {
-			break
-		}*/
-	}
-
-	var sum uint64
-	for _, val := range valueMap {
-		if val <= 100000 {
-			sum += val
+	sum := 0
+	for _, v := range folders {
+		if v <= 100_000 {
+			sum += v
 		}
 	}
-
-	/*for key, value := range valueMap {
-		fmt.Print(key)
-		fmt.Print(" ")
-		fmt.Print(value)
-		fmt.Println()
-	}*/
-
-	//fmt.Println(valueMap)
 
 	return sum
 }
 
-func part2() uint64 {
+func part2() int {
 	utils.StartTimer()
 
-	// part2 solution
+	req := 30_000_000 - (70_000_000 - folders["/root"])
+	var candidates []int
 
-	return 0
+	for _, v := range folders {
+		if v >= req {
+			candidates = append(candidates, v)
+		}
+	}
+
+	min, _ := utils.MinMax(candidates)
+
+	return min
 }
 
 func main() {
@@ -120,8 +86,8 @@ func main() {
 
 	read(utils.GetInputPath())
 
-	utils.WriteSolutionUint64(part1())
-	utils.WriteSolutionUint64(part2())
+	utils.WriteSolutionInt(part1())
+	utils.WriteSolutionInt(part2())
 
 	fmt.Println("done.")
 }

@@ -91,25 +91,3 @@ func Contains(s []string, str string) bool {
 
 	return false
 }
-
-/*func GetDayID() string {
-	return dayId
-}*/
-
-/*func initDayID() {
-	_, file, _, _ := runtime.Caller(2)
-	dayId = strings.Split(filepath.Base(file), ".")[0]
-}*/
-
-/*func templating(dayNum string) {
-	os.Create("inputs/day" + dayNum + "_input")
-	os.Create("solutions/day" + dayNum + "_solution")
-
-	data, err := os.ReadFile("template")
-	u.CheckError(err)
-
-	data = bytes.Replace(data, []byte("{DAYNUM}"), []byte(dayNum), -1)
-
-	err = os.WriteFile("days/day"+dayNum+".go", data, 0644)
-	u.CheckError(err)
-}*/

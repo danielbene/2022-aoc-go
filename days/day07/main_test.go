@@ -6,7 +6,7 @@ import (
 )
 
 func TestPart1(t *testing.T) {
-	correct := uint64(95437)
+	correct := 95437
 	sol := part1()
 
 	if sol != correct {
@@ -15,7 +15,7 @@ func TestPart1(t *testing.T) {
 }
 
 func TestPart2(t *testing.T) {
-	correct := uint64(0)
+	correct := 24933642
 	sol := part2()
 
 	if sol != correct {
