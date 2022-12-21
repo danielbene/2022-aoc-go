@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"myAwesomeModule/utils"
 	"os"
-	"strconv"
 )
 
-var input []int
+var input []string
+var treeMap [][]int
 
 func read(filePath string) {
 	file, err := os.Open(filePath)
@@ -16,29 +16,71 @@ func read(filePath string) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-
-	elfCal := 0
 	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "" {
-			input = append(input, elfCal)
-			elfCal = 0
-		} else {
-			cal, _ := strconv.Atoi(line)
-			elfCal += cal
+		input = append(input, scanner.Text())
+	}
+
+	treeMap = make([][]int, len(input), len(input[0]))
+
+	idx := 0
+	for _, line := range input {
+		for _, r := range line {
+			treeMap[idx] = append(treeMap[idx], int(r-'0'))
+		}
+
+		idx++
+	}
+
+	utils.CheckError(scanner.Err())
+}
+
+func testLR(sideTrees []int, height int) int {
+	for _, j := range sideTrees {
+		if j >= height {
+			return 1
 		}
 	}
 
-	input = append(input, elfCal)
-	utils.CheckError(scanner.Err())
+	return 0
+}
+
+func testFB(min int, max int, row int, val int) int {
+	for i := min; i < max; i++ {
+		if treeMap[i][row] >= val {
+			return 1
+		}
+	}
+
+	return 0
+}
+
+func checkVisibility(col int, row int) bool {
+	val := treeMap[col][row]
+
+	rowCnt := 0
+	rowCnt += testLR(treeMap[col][0:row], val)
+	rowCnt += testLR(treeMap[col][row+1:], val)
+
+	colCnt := 0
+	colCnt += testFB(0, col, row, val)
+	colCnt += testFB(col+1, len(treeMap), row, val)
+
+	return rowCnt < 2 || colCnt < 2
 }
 
 func part1() int {
 	utils.StartTimer()
 
-	// part1 solution
+	visibleCnt := len(treeMap[0])*2 + len(treeMap)*2 - 4
+	for i := 1; i < len(treeMap)-1; i++ {
+		for j := 1; j < len(treeMap[0])-1; j++ {
+			if checkVisibility(i, j) {
+				visibleCnt++
+			}
+		}
+	}
 
-	return 0
+	return visibleCnt
 }
 
 func part2() int {
