@@ -10,6 +10,7 @@ import (
 var input []string
 var treeMap [][]int
 
+// yeaaah... so these are not the prettiest spoons in the drawer
 func read(filePath string) {
 	file, err := os.Open(filePath)
 	utils.CheckError(err)
@@ -83,12 +84,58 @@ func part1() int {
 	return visibleCnt
 }
 
+func countScenic(col int, row int) int {
+	val := treeMap[col][row]
+	lCnt, rCnt, tCnt, bCnt := 0, 0, 0, 0
+
+	low := treeMap[col][0:row]
+	for j := len(low) - 1; j >= 0; j-- {
+		test := low[j]
+		lCnt++
+
+		if test >= val {
+			break
+		}
+	}
+
+	for _, j := range treeMap[col][row+1:] {
+		rCnt++
+		if j >= val {
+			break
+		}
+	}
+
+	for i := col - 1; i >= 0; i-- {
+		tCnt++
+		if treeMap[i][row] >= val {
+			break
+		}
+	}
+
+	for i := col + 1; i < len(treeMap); i++ {
+		bCnt++
+		if treeMap[i][row] >= val {
+			break
+		}
+	}
+
+	return lCnt * rCnt * tCnt * bCnt
+}
+
 func part2() int {
 	utils.StartTimer()
 
-	// part2 solution
+	topScenery := 0
+	for i := 1; i < len(treeMap)-1; i++ {
+		for j := 1; j < len(treeMap[0])-1; j++ {
+			top := countScenic(i, j)
+			if top > topScenery {
+				topScenery = top
+			}
+		}
+	}
 
-	return 0
+	return topScenery
 }
 
 func main() {
