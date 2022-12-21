@@ -29,6 +29,10 @@ func StartTimer() {
 	start = time.Now()
 }
 
+func WriteSolutionUint64(solution uint64) {
+	WriteSolutionStr(strconv.FormatUint(solution, 10))
+}
+
 func WriteSolutionInt(solution int) {
 	WriteSolutionStr(strconv.Itoa(solution))
 }
@@ -78,24 +82,12 @@ func MinMax(array []int) (int, int) {
 	return min, max
 }
 
-/*func GetDayID() string {
-	return dayId
-}*/
+func Contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
 
-/*func initDayID() {
-	_, file, _, _ := runtime.Caller(2)
-	dayId = strings.Split(filepath.Base(file), ".")[0]
-}*/
-
-/*func templating(dayNum string) {
-	os.Create("inputs/day" + dayNum + "_input")
-	os.Create("solutions/day" + dayNum + "_solution")
-
-	data, err := os.ReadFile("template")
-	u.CheckError(err)
-
-	data = bytes.Replace(data, []byte("{DAYNUM}"), []byte(dayNum), -1)
-
-	err = os.WriteFile("days/day"+dayNum+".go", data, 0644)
-	u.CheckError(err)
-}*/
+	return false
+}
